@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:radioactiva/src/models/tema_models.dart';
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
-
+class ConfiguracionPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _ConfiguracionPageState createState() => _ConfiguracionPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ConfiguracionPageState extends State<ConfiguracionPage> {
   @override
   Widget build(BuildContext context) {
     return Pantalla();

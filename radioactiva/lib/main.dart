@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:radioactiva/src/pages/config_page.dart';
 import 'package:radioactiva/src/pages/home_page.dart';
 import 'package:radioactiva/src/pages/radio_page.dart';
 import 'package:radioactiva/src/pages/settings_page.dart';
 import 'package:radioactiva/src/pages/video_page.dart';
+import 'package:radioactiva/src/utils/preferencias.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = new PreferenciasUsuario();
+  await prefs.initPrefs();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
+  final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +25,8 @@ class MyApp extends StatelessWidget {
         'radio': (BuildContext c) => RadioPage(),
         'video': (BuildContext c) => VideoPage(),
         'home': (BuildContext c) => HomePage(),
-        'settings': (BuildContext c) => SettingsPage()
+        'settings': (BuildContext c) => SettingsPage(),
+        'config': (BuildContext c) => ConfiguracionPage()
       },
       theme: ThemeData(primaryColor: Color.fromRGBO(193, 53, 85, 1)),
     );

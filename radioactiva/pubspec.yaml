@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   flutter_radio: ^0.1.7
   flutter_radio_player: ^1.0.7
+  shared_preferences: ^0.5.12
+  video_player:
 
 dev_dependencies:
   flutter_test:
