@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:radioactiva/src/pages/radio_page.dart';
+import 'package:radioactiva/src/pages/settings_page.dart';
+import 'package:radioactiva/src/pages/video_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -10,6 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
+  int indexAux = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,11 +26,16 @@ class _HomePageState extends State<HomePage> {
         ],
         title: Text('Radio Activa'),
       ),
-      body: RadioPage(),
+      body: _callPage(indexAux),
       bottomNavigationBar: _menuInferior(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            indexAux = 2;
+            print('RADIO MODE');
+          });
+        },
         child: Icon(Icons.radio),
         backgroundColor: Color.fromRGBO(182, 50, 84, 1),
       ),
@@ -42,6 +50,8 @@ class _HomePageState extends State<HomePage> {
       onTap: (index) {
         setState(() {
           currentIndex = index;
+          indexAux = index;
+          print('El indes es :$index');
         });
       },
       items: [
@@ -140,5 +150,16 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ));
+  }
+
+  Widget _callPage(int paginaActual) {
+    switch (paginaActual) {
+      case 0:
+        return VideoPage();
+      case 1:
+        return SettingsPage();
+      default:
+        return RadioPage();
+    }
   }
 }

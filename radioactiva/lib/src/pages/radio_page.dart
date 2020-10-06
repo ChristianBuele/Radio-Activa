@@ -15,7 +15,7 @@ class _RadioPageState extends State<RadioPage> {
         //  margin: EdgeInsets.only(top: 90.0),
         decoration: new BoxDecoration(
           image: new DecorationImage(
-            image: new AssetImage("assets/fondo.png"),
+            image: new AssetImage("assets/fondo.jpg"),
             fit: BoxFit.cover,
           ),
         ),
