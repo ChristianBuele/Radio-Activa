@@ -15,7 +15,7 @@ class VideoBloc {
   }
   void initRadioService() async {
     videoPlayerController = VideoPlayerController.network(
-        'http://dwstream3-lh.akamaihd.net/i/dwstream3_live@124409/index_5_av-p.m3u8?sd=10&rebase=on');
+        'https://srv4.zcast.com.br/freddy2571/freddy2571/playlist.m3u8');
     await videoPlayerController.initialize();
     videoPlayerController.addListener(() {
       tiempoVideo = videoPlayerController.value.position.inSeconds;

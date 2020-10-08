@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:radioactiva/src/pages/radio_page.dart';
+import 'package:radioactiva/src/pages/prueba.dart';
+import 'package:radioactiva/src/pages/radio_pagepro.dart';
 import 'package:radioactiva/src/pages/settings_page.dart';
 import 'package:radioactiva/src/pages/video_page.dart';
 
@@ -46,7 +47,7 @@ class _PantallaState extends State<Pantalla> {
       case 1:
         return SettingsPage();
       default:
-        return RadioPage();
+        return MyHomePage();
     }
   }
 

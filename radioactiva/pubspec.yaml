@@ -32,6 +32,11 @@ dependencies:
   flutter_radio_player: ^1.0.7
   shared_preferences: ^0.5.12
   video_player:
+  flick_video_player: ^0.1.1
+  font_awesome_flutter: ^8.9.0
+  flutter_xlider: ^3.4.0
+  fl_chart: ^0.12.0
+  animated_background: ^1.0.5
 
 dev_dependencies:
   flutter_test:

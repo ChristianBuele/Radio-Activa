@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:radioactiva/src/models/reproVideo.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:radioactiva/src/provider/radioProvider.dart';
 import 'package:radioactiva/src/provider/videoProider.dart';
 import 'package:video_player/video_player.dart';
@@ -12,22 +12,41 @@ class VideoPage extends StatefulWidget {
 }
 
 RadioBloc radioBloc = new RadioBloc();
-VideoBloc videoBloc = new VideoBloc();
+//VideoBloc videoBloc = new VideoBloc();
 
 class _VideoPageState extends State<VideoPage> {
+  VideoBloc videoBloc = new VideoBloc();
   double tiempoVideo = 0.0;
+  FlickManager flickManager;
   @override
   Widget build(BuildContext context) {
     print('radio es $radioBloc');
     statusRadio();
+
     return Scaffold(
       backgroundColor: (videoBloc.videoPlayerController.value.isPlaying)
           ? Colors.black
           : Colors.white,
       body: videoBloc.videoPlayerController.value.initialized
-          ? player(context)
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: FlickVideoPlayer(
+                    flickManager: flickManager,
+                  ),
+                ),
+              ],
+            ) //player(context)
           : CircularProgressIndicator(),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    flickManager =
+        FlickManager(videoPlayerController: videoBloc.videoPlayerController);
   }
 
   statusRadio() async {
@@ -41,7 +60,6 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   player(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Column(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -132,9 +150,7 @@ class _VideoPageState extends State<VideoPage> {
   @override
   void dispose() {
     super.dispose();
-    videoBloc.isPlaying = false;
-    setState(() {});
-    videoBloc.videoPlayerController.dispose();
+    //flickManager.dispose();
   }
 
   controlesVideo() {

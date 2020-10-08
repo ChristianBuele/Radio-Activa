@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_radio_player/flutter_radio_player.dart';
 
@@ -13,6 +11,10 @@ class RadioBloc {
   }
   RadioBloc._internal() {
     obtenerRadio();
+  }
+  void setvolumen(double vol) {
+    this.volumen = vol;
+    _flutterRadioPlayer.setVolume(volumen);
   }
 
   void obtenerRadio() {
@@ -30,5 +32,10 @@ class RadioBloc {
 
   FlutterRadioPlayer get radio {
     return _flutterRadioPlayer;
+  }
+
+  void actualizar() {
+    _flutterRadioPlayer.stop();
+    _flutterRadioPlayer.play();
   }
 }

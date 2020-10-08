@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_radio_player/flutter_radio_player.dart';
 import 'package:radioactiva/src/provider/radioProvider.dart';
+import 'package:radioactiva/src/provider/videoProider.dart';
 
 // ignore: must_be_immutable
 class RadioPage extends StatefulWidget {
@@ -13,7 +13,6 @@ class RadioPage extends StatefulWidget {
 }
 
 class _RadioPageState extends State<RadioPage> {
-  FlutterRadioPlayer _flutterRadioPlayer = new FlutterRadioPlayer();
   RadioBloc radioBloc;
   @override
   void initState() {
@@ -23,6 +22,7 @@ class _RadioPageState extends State<RadioPage> {
 
   @override
   Widget build(BuildContext context) {
+    estadoTv();
     return Scaffold(
       body: Center(
         child: Column(
@@ -40,6 +40,7 @@ class _RadioPageState extends State<RadioPage> {
                           child: Text("Start listening now"),
                           onPressed: () async {
                             await radioBloc.initRadioService();
+                            // await radioBloc.radio.play();
                           });
                       break;
                     case FlutterRadioPlayer.flutter_radio_loading:
@@ -104,5 +105,13 @@ class _RadioPageState extends State<RadioPage> {
         ),
       ),
     );
+  }
+
+  void estadoTv() {
+    VideoBloc videoBloc = new VideoBloc();
+    if (videoBloc.videoPlayerController.value.isPlaying) {
+      videoBloc.pause();
+      radioBloc.actualizar();
+    }
   }
 }
