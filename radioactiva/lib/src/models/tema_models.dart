@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:radioactiva/src/pages/prueba.dart';
 import 'package:radioactiva/src/pages/radio_pagepro.dart';
 import 'package:radioactiva/src/pages/settings_page.dart';
 import 'package:radioactiva/src/pages/video_page.dart';
+import 'package:radioactiva/src/utils/preferencias.dart';
+import 'package:radioactiva/src/utils/colores.dart' as color;
 
 class Pantalla extends StatefulWidget {
   @override
@@ -10,23 +11,35 @@ class Pantalla extends StatefulWidget {
 }
 
 class _PantallaState extends State<Pantalla> {
+  final prefs = new PreferenciasUsuario();
+  bool _colorSecundario = false;
   int currentIndex = 0;
-  int indexAux = 0;
+  int indexAux = 3;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(''),
-        ),
-        actions: [
-          IconButton(icon: Icon(Icons.notifications_active), onPressed: () {})
-        ],
-      ),
+          title: Center(
+            child: Text(''),
+          ),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.notifications_active),
+                onPressed: () {
+                  Navigator.pushNamed(context, 'notificaciones');
+                })
+          ],
+          backgroundColor: (prefs.colorSecundario)
+              ? color.appBarColorLight
+              : color.appBarColorDark),
       body: _callPage(indexAux),
       bottomNavigationBar: _menuInferior(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: (prefs.colorSecundario)
+            ? color.appBarColorLight
+            : color.appBarColorDark,
+        heroTag: 'btnGomes',
         onPressed: () {
           setState(() {
             indexAux = 2;
@@ -34,7 +47,7 @@ class _PantallaState extends State<Pantalla> {
           });
         },
         child: Icon(Icons.radio),
-        backgroundColor: Color.fromRGBO(182, 50, 84, 1),
+        // backgroundColor: Color.fromRGBO(182, 50, 84, 1),
       ),
       drawer: crearDrawer(context),
     );
@@ -47,14 +60,19 @@ class _PantallaState extends State<Pantalla> {
       case 1:
         return SettingsPage();
       default:
-        return MyHomePage();
+        return RadioPageLight();
     }
   }
 
   _menuInferior(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Color.fromRGBO(228, 103, 107, 1),
-      currentIndex: currentIndex, // le dice al elemento activo
+      backgroundColor: (prefs.colorSecundario)
+          ? color.appBarColorLight
+          : color.appBarColorDark,
+      currentIndex: currentIndex,
+      selectedItemColor: color.textoLight,
+      unselectedItemColor: color.gris,
+      // le dice al elemento activo
       onTap: (index) {
         setState(() {
           currentIndex = index;
@@ -65,17 +83,15 @@ class _PantallaState extends State<Pantalla> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.live_tv_sharp,
-            color: Colors.white,
+            Icons.ondemand_video,
           ),
-          label: 'live',
+          label: 'Live',
         ),
         BottomNavigationBarItem(
             icon: Icon(
               Icons.brightness_5,
-              color: Colors.white,
             ),
-            label: 'Settins'),
+            label: 'Settings'),
       ],
     );
   }
@@ -107,21 +123,27 @@ class _PantallaState extends State<Pantalla> {
                   ],
                 ),
               ),
+              Divider(
+                color: Colors.white,
+              ),
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: AssetImage('assets/icons/f-01.png'),
                 ),
                 title: Text(
-                  'Facebook',
+                  'Faceboooook',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 onTap: () {
-                  //Navigator.pushReplacementNamed(context, HomePagePa);
+                  Navigator.pushNamed(context, 'navegador',
+                      arguments:
+                          'https://www.facebook.com/radioactivafan,Facebook');
                   print('FACEBOOK');
                 },
                 subtitle: Text('@radioactivafan',
                     style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
+              Divider(),
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: AssetImage('assets/icons/t-01.png'),
@@ -131,12 +153,14 @@ class _PantallaState extends State<Pantalla> {
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 onTap: () {
-                  //Navigator.pushReplacementNamed(context, HomePagePa);
+                  Navigator.pushNamed(context, 'navegador',
+                      arguments: 'https://twitter.com/radioactivafan,Twiter');
                   print('Twiter');
                 },
                 subtitle: Text('@radioactivafan',
                     style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
+              Divider(),
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: AssetImage('assets/icons/i-01.png'),
@@ -146,14 +170,35 @@ class _PantallaState extends State<Pantalla> {
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
                 onTap: () {
-                  //Navigator.pushReplacementNamed(context, HomePagePa);
+                  Navigator.pushNamed(context, 'navegador',
+                      arguments:
+                          'https://pub.dev/packages/flutter_webview_plugin,Instragram');
                   print('FACEBOOK');
                 },
                 subtitle: Text('@radioactivafan',
                     style: TextStyle(color: Colors.white, fontSize: 16)),
+              ),
+              Divider(
+                color: Colors.white,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: Text(
+                  'Acerca del Desarrolador',
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                ),
               )
             ],
           ),
         ));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _colorSecundario = prefs.colorSecundario;
   }
 }

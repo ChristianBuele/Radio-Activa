@@ -15,7 +15,7 @@ RadioBloc radioBloc = new RadioBloc();
 //VideoBloc videoBloc = new VideoBloc();
 
 class _VideoPageState extends State<VideoPage> {
-  VideoBloc videoBloc = new VideoBloc();
+  VideoBloc videoBloc;
   double tiempoVideo = 0.0;
   FlickManager flickManager;
   @override
@@ -24,29 +24,49 @@ class _VideoPageState extends State<VideoPage> {
     statusRadio();
 
     return Scaffold(
-      backgroundColor: (videoBloc.videoPlayerController.value.isPlaying)
-          ? Colors.black
-          : Colors.white,
-      body: videoBloc.videoPlayerController.value.initialized
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: FlickVideoPlayer(
-                    flickManager: flickManager,
-                  ),
-                ),
-              ],
-            ) //player(context)
-          : CircularProgressIndicator(),
-    );
+        backgroundColor: (videoBloc.videoPlayerController.value.isPlaying)
+            ? Colors.black
+            : Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: FlickVideoPlayer(
+                flickManager: flickManager,
+              ),
+            ),
+            /*  FutureBuilder(
+              future: videoBloc.streamVideo,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  // If the VideoPlayerController has finished initialization, use
+                  // the data it provides to limit the aspect ratio of the video.
+                  return AspectRatio(
+                    aspectRatio:
+                        videoBloc.videoPlayerController.value.aspectRatio,
+                    // Use the VideoPlayer widget to display the video.
+                    child: VideoPlayer(videoBloc.videoPlayerController),
+                  );
+                } else {
+                  // If the VideoPlayerController is still initializing, show a
+                  // loading spinner.
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),*/
+          ],
+        ) //player(context)
+
+        );
   }
 
   @override
   void initState() {
-    super.initState();
+    print('entrra al init del video');
+    videoBloc = new VideoBloc();
     flickManager =
         FlickManager(videoPlayerController: videoBloc.videoPlayerController);
+    super.initState();
   }
 
   statusRadio() async {
@@ -145,12 +165,6 @@ class _VideoPageState extends State<VideoPage> {
         )
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    //flickManager.dispose();
   }
 
   controlesVideo() {

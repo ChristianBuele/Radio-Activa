@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "159500647423",
+    "firebase_url": "https://radioactiva-e95ad.firebaseio.com",
+    "project_id": "radioactiva-e95ad",
+    "storage_bucket": "radioactiva-e95ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159500647423:android:7067ec76da66dce9dc85ca",
+        "android_client_info": {
+          "package_name": "com.radioactica.radioactivafan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159500647423-jbd3i7u6f60flr7rlckkdmga80tens80.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.radioactica.radioactivafan",
+            "certificate_hash": "06b6900805ba6ece229a7e9fc23afb50eb628b88"
+          }
+        },
+        {
+          "client_id": "159500647423-8p0ahmmg09pt7ktn62p9gcsakgn00cu7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrdqa3oY0Yu1UnfC3fTYO-qCgvII3QC-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159500647423-8p0ahmmg09pt7ktn62p9gcsakgn00cu7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

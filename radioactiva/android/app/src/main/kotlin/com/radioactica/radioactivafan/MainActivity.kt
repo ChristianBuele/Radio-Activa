@@ -1,4 +1,4 @@
-package com.example.radioactiva
+package com.radioactica.radioactivafan
 
 import io.flutter.embedding.android.FlutterActivity
 

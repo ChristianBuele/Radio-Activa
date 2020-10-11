@@ -30,19 +30,19 @@ class PreferenciasUsuario {
     _prefs.setBool('colorSecundario', value);
   }
 
-  get nombreUsuario {
-    return _prefs.getString('nombreUsuario') ?? '';
+  set token(String token) {
+    _prefs.setString('token', token);
   }
 
-  set nombreUsuario(String value) {
-    _prefs.setString('nombreUsuario', value);
+  get token {
+    return _prefs.get('token') ?? 'no-token';
   }
 
-  get ultimaPagina {
-    return _prefs.getString('ultimaPagina') ?? 'home';
+  set idUsuario(String id) {
+    _prefs.setString('idUsuario', id);
   }
 
-  set ultimaPagina(String value) {
-    _prefs.setString('ultimaPagina', value);
+  get idUsuario {
+    return _prefs.get('idUsuario') ?? null;
   }
 }

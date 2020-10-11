@@ -1,11 +1,15 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_radio_player/flutter_radio_player.dart';
 
 class RadioBloc {
   static final RadioBloc _singleton = new RadioBloc._internal();
   FlutterRadioPlayer _flutterRadioPlayer = new FlutterRadioPlayer();
+  AudioPlayer audioPlayer = new AudioPlayer();
   bool isPlaying = false;
   double volumen = 0.8;
+  Duration duracion = new Duration();
+  Duration posicion = new Duration();
   factory RadioBloc() {
     return _singleton;
   }
@@ -23,8 +27,9 @@ class RadioBloc {
 
   Future<void> initRadioService() async {
     try {
-      await _flutterRadioPlayer.init("Radio Activa", "Live",
-          "https://radio.kapchosting.com/9308/stream", "false");
+      await _flutterRadioPlayer.init(
+          "Radio Activa", "Live", "https://compuhome.ovh:9000/mega", "false");
+      isPlaying = false;
     } on PlatformException {
       print("Exception occurred while trying to register the services.");
     }
@@ -34,8 +39,8 @@ class RadioBloc {
     return _flutterRadioPlayer;
   }
 
-  void actualizar() {
-    _flutterRadioPlayer.stop();
-    _flutterRadioPlayer.play();
+  void actualizar() async {
+    await _flutterRadioPlayer.stop();
+    await _flutterRadioPlayer.play();
   }
 }
