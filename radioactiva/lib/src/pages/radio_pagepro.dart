@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_radio_player/flutter_radio_player.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:radioactiva/src/provider/radioProvider.dart';
 import 'package:radioactiva/src/provider/videoProider.dart';
@@ -193,7 +192,7 @@ class _RadioPageLightState extends State<RadioPageLight> {
                   'Radio Activa',
                   style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
-                Text('Reactivando tus Sentidos',
+                Text('¡ACTIVA TU MÚSICA!',
                     style: TextStyle(fontSize: 15, color: Colors.grey)),
                 SizedBox(
                   height: 20,
@@ -383,7 +382,6 @@ class _RadioPageLightState extends State<RadioPageLight> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

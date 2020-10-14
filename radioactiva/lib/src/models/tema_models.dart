@@ -40,14 +40,13 @@ class _PantallaState extends State<Pantalla> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  SocialShare.shareWhatsapp(
-                      'Hola Radio Activa me podría pasar ');
+                  SocialShare.shareWhatsapp(prefs.whatsapp);
                 }),
             IconButton(
                 icon: Icon(FontAwesomeIcons.shareAlt),
                 onPressed: () {
                   print('compartiendo');
-                  Share.share('Comparte nuestra app con tus amigos');
+                  Share.share(prefs.mensaje);
                 }),
             StreamBuilder(
               stream: scansBloc.hayNotificaciones,
@@ -67,6 +66,12 @@ class _PantallaState extends State<Pantalla> {
                           Navigator.pushNamed(context, 'notificaciones');
                         });
                   }
+                } else {
+                  return IconButton(
+                      icon: Icon(Icons.notifications_none),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'notificaciones');
+                      });
                 }
               },
             ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:radioactiva/src/pages/home_page.dart';
@@ -9,6 +11,7 @@ import 'package:radioactiva/src/pages/video_page.dart';
 import 'package:radioactiva/src/provider/push_notification.dart';
 import 'package:radioactiva/src/provider/videoProider.dart';
 import 'package:radioactiva/src/utils/preferencias.dart';
+import 'package:http/http.dart' as http;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +33,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final pushProvider = new PushNotificationsProvider();
     pushProvider.initNotifications();
@@ -48,6 +50,7 @@ class _MyAppState extends State<MyApp> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    cargarMensajes();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
@@ -63,5 +66,17 @@ class _MyAppState extends State<MyApp> {
       },
       //theme: ThemeData(primaryColor: Color.fromRGBO(193, 53, 85, 1)),
     );
+  }
+
+  cargarMensajes() async {
+    final respsms = await http
+        .get('https://radioactiva-e95ad.firebaseio.com/Mensajes.json');
+    final datasms = json.decode(respsms.body);
+    try {
+      prefs.mensaje = datasms['compartir'];
+      prefs.whatsapp = datasms['Whastapp'];
+    } catch (e) {
+      print('recibinedo los mensaje hay un error ${e}');
+    }
   }
 }

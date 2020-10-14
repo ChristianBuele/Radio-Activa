@@ -17,8 +17,7 @@ class DBProvider {
     }
 
     _database = await initDB();
-    List<Map> x =
-        await _database.rawQuery('SELECT * FROM NOTIFICACIONESRADIOACTIVAX');
+
     return _database;
   }
 

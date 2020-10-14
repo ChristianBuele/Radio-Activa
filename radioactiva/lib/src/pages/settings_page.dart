@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:radioactiva/src/models/menu_widget.dart';
 import 'package:radioactiva/src/provider/push_notification.dart';
 import 'package:radioactiva/src/utils/preferencias.dart';
 import 'package:radioactiva/src/utils/colores.dart' as color;
@@ -196,8 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (formKey.currentState.validate()) {
       print('enviado notigicaion');
       final send = PushNotificationsProvider();
-      String dato = await send.enviarNotificaciones(
-          tituloMensaje, cuerpoMensaje, contenido);
+      await send.enviarNotificaciones(tituloMensaje, cuerpoMensaje, contenido);
       mostrarSnackBar('Notificaciones Enviadas', context);
       formKey.currentState.save();
       tituloMensaje = "";
@@ -215,7 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (formKeyLink.currentState.validate()) {
       print('enviado Link');
 
-      final resp = await http.put(
+      await http.put(
         'https://radioactiva-e95ad.firebaseio.com/enlaces.json',
         body: jsonEncode(
             {"radio": "https://radio.kapchosting.com/9308/stream", "tv": link}),

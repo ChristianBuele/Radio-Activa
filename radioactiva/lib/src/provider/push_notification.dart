@@ -159,7 +159,6 @@ class PushNotificationsProvider {
     final url = 'https://radioactiva-e95ad.firebaseio.com/usuarios.json';
     final resp = await http.get(url);
     final decodedData = json.decode(resp.body);
-    List<String> tokens = new List();
     if (decodedData == null) {
       print('no hay datos de dispositivos');
       listaToken = [];

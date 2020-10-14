@@ -14,7 +14,6 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
   @override
   void initState() {
     scansBloc.estadoNotificacion(false);
-    // TODO: implement initState
     notificacionesProvider = NotificacionesProvider();
     super.initState();
   }
@@ -24,7 +23,6 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
   @override
   Widget build(BuildContext context) {
     final scansBlock = new NotificacionesProvider();
-    final String nombre = ModalRoute.of(context).settings.arguments;
     final scan = new NotificacionesProvider();
     scan.obtenerScans();
     return Scaffold(

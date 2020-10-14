@@ -45,4 +45,20 @@ class PreferenciasUsuario {
   get idUsuario {
     return _prefs.get('idUsuario') ?? null;
   }
+
+  set whatsapp(String mensaje) {
+    _prefs.setString('whatsapp', mensaje);
+  }
+
+  get whatsapp {
+    return _prefs.get('whatsapp') ?? 'Hola quiero mandar un saludo para ';
+  }
+
+  set mensaje(String mensaje) {
+    _prefs.setString('mensaje', mensaje);
+  }
+
+  get mensaje {
+    return _prefs.get('mensaje') ?? 'Quiero ...';
+  }
 }
