@@ -17,10 +17,17 @@ class NotificacionesProvider {
 
   Stream<List<NotificacionesModel>> get notificacion =>
       _notificacionesController.stream;
-
+  StreamController<bool> hayNotificacionesSinLeer =
+      StreamController.broadcast();
   //obtener toda la info de los scans
+
+  Stream<bool> get hayNotificaciones => hayNotificacionesSinLeer.stream;
   obtenerScans() async {
     _notificacionesController.sink.add(await DBProvider.db.getTodosScans());
+  }
+
+  estadoNotificacion(bool value) {
+    hayNotificacionesSinLeer.sink.add(value);
   }
 
   agregarScan(NotificacionesModel notificacionesModel) async {
@@ -40,5 +47,6 @@ class NotificacionesProvider {
 
   dispose() {
     _notificacionesController.close();
+    hayNotificacionesSinLeer.close();
   }
 }

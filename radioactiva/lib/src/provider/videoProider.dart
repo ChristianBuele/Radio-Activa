@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:video_player/video_player.dart';
+import 'package:http/http.dart' as http;
 
 class VideoBloc {
   static final _singleton = new VideoBloc._internal();
@@ -8,15 +11,27 @@ class VideoBloc {
   int tiempoAver = 0;
   double volumen = 0.8;
   bool isPlaying = true;
+
+  String link = 'https://srv4.zcast.com.br/freddy2571/freddy2571/playlist.m3u8';
   factory VideoBloc() {
     return _singleton;
   }
   VideoBloc._internal() {
-    initRadioService();
+    //initRadioService();
+    obtenerEnlace();
   }
+  void obtenerEnlace() async {
+    print('en enlace viejo es $link');
+    final res =
+        await http.get('https://radioactiva-e95ad.firebaseio.com/enlaces.json');
+    final decodedData = json.decode(res.body);
+    print('llega el enlace $link');
+    this.link = decodedData['tv'];
+  }
+
   void initRadioService() async {
-    videoPlayerController = VideoPlayerController.network(
-        'https://srv4.zcast.com.br/freddy2571/freddy2571/playlist.m3u8');
+    print('Se inicia el video con el enlace $link');
+    videoPlayerController = VideoPlayerController.network(this.link);
     _initializeVideoPlayerFuture = videoPlayerController.initialize();
   }
 

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_radio_player/flutter_radio_player.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:radioactiva/src/provider/radioProvider.dart';
+import 'package:radioactiva/src/provider/videoProider.dart';
 import 'package:radioactiva/src/utils/colores.dart' as color;
+import 'package:radioactiva/src/utils/preferencias.dart';
 
 class RadioPageLight extends StatefulWidget {
   @override
@@ -19,42 +23,69 @@ class _RadioPageLightState extends State<RadioPageLight> {
     radioBloc = new RadioBloc();
   }
 
+  final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
+    VideoBloc videoBloc = new VideoBloc();
+    try {
+      videoBloc.pause();
+      print('pause a bideo');
+    } catch (e) {
+      print('ni hay problema de video');
+    }
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.blueAccent,
-          gradient: RadialGradient(colors: [Colors.black, Colors.red]),
-          image: DecorationImage(
-            image: AssetImage('assets/fpd.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        width: size.width,
-        child: Stack(children: [
-          Column(
-            children: [
-              Container(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
-                      IconButton(
-                          color: Colors.white,
-                          icon: Icon((radioBloc.volumen == 0)
-                              ? (FontAwesomeIcons.volumeMute)
-                              : FontAwesomeIcons.volumeUp),
-                          onPressed: () {
-                            if (radioBloc.volumen != 0) {
-                              radioBloc.setvolumen(0.0);
-                            } else {
-                              radioBloc.setvolumen(0.8);
-                            }
-                            setState(() {});
-                          }),
-                      Slider(
-                        activeColor: color.appBarColorLight,
+      body: SingleChildScrollView(
+        child: Container(
+          /* decoration: BoxDecoration(
+            color: Colors.blueAccent,
+            gradient: RadialGradient(colors: [Colors.black, Colors.red]),
+            image: DecorationImage(
+              image: AssetImage('assets/fpd.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),*/
+          width: size.width,
+          height: size.height,
+          child: Stack(children: [
+            Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    print('object');
+                  },
+                  child: Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.50,
+                    movementDuration: Duration(seconds: 1),
+                    child: Container(
+                      child: ListTile(
+                        leading: Container(
+                          //   backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+                          child: IconButton(
+                              color: prefs.colorSecundario
+                                  ? color.appBarColorLight
+                                  : color.appBarColorDark,
+                              icon: Icon((radioBloc.volumen == 0)
+                                  ? (FontAwesomeIcons.volumeMute)
+                                  : FontAwesomeIcons.volumeUp),
+                              onPressed: () {
+                                if (radioBloc.volumen != 0) {
+                                  radioBloc.setvolumen(0.0);
+                                } else {
+                                  radioBloc.setvolumen(0.8);
+                                }
+                                setState(() {});
+                              }),
+                          // foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    secondaryActions: <Widget>[
+                      /* Slider(
+                        activeColor: prefs.colorSecundario
+                            ? color.appBarColorLight
+                            : color.appBarColorDark,
                         inactiveColor: Color.fromRGBO(120, 120, 120, 1),
                         value: radioBloc.volumen,
                         onChanged: (value) {
@@ -63,41 +94,116 @@ class _RadioPageLightState extends State<RadioPageLight> {
                         },
                         max: 1,
                         min: 0,
-                      ),
+                      ),*/
+                      SlideAction(
+                        closeOnTap: true,
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            activeTrackColor: Colors.red[700],
+                            inactiveTrackColor: Colors.red[100],
+                            trackShape: RoundedRectSliderTrackShape(),
+                            trackHeight: 4.0,
+                            thumbShape:
+                                RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                            thumbColor: Colors.redAccent,
+                            overlayColor: Colors.red.withAlpha(32),
+                            overlayShape:
+                                RoundSliderOverlayShape(overlayRadius: 28.0),
+                            tickMarkShape: RoundSliderTickMarkShape(),
+                            activeTickMarkColor: Colors.red[700],
+                            inactiveTickMarkColor: Colors.red[100],
+                            valueIndicatorShape:
+                                PaddleSliderValueIndicatorShape(),
+                            valueIndicatorColor: Colors.redAccent,
+                            valueIndicatorTextStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          child: Slider(
+                            activeColor: prefs.colorSecundario
+                                ? color.appBarColorLight
+                                : color.appBarColorDark,
+                            inactiveColor: Color.fromRGBO(120, 120, 120, 1),
+                            value: radioBloc.volumen,
+                            onChanged: (value) {
+                              radioBloc.setvolumen(value);
+                              setState(() {});
+                            },
+                            max: 1,
+                            min: 0,
+                          ),
+                        ),
+                      )
                     ],
-                  )),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color(0x99000000),
-                          offset: Offset(0, 20),
-                          spreadRadius: 0,
-                          blurRadius: 20),
-                      BoxShadow(
-                          color: Color(0x55000000),
-                          offset: Offset(0, 10),
-                          spreadRadius: 0,
-                          blurRadius: 80),
-                    ]),
-                child: imagenRadio(size),
-              ),
-              /*
+                  ),
+                ),
+                /*Container(
+                    alignment: Alignment.topLeft,
+                    child: Row(
+                      children: [
+                        IconButton(
+                            color: prefs.colorSecundario
+                                ? color.appBarColorLight
+                                : color.appBarColorDark,
+                            icon: Icon((radioBloc.volumen == 0)
+                                ? (FontAwesomeIcons.volumeMute)
+                                : FontAwesomeIcons.volumeUp),
+                            onPressed: () {
+                              if (radioBloc.volumen != 0) {
+                                radioBloc.setvolumen(0.0);
+                              } else {
+                                radioBloc.setvolumen(0.8);
+                              }
+                              setState(() {});
+                            }),
+                        Slider(
+                          activeColor: prefs.colorSecundario
+                              ? color.appBarColorLight
+                              : color.appBarColorDark,
+                          inactiveColor: Color.fromRGBO(120, 120, 120, 1),
+                          value: radioBloc.volumen,
+                          onChanged: (value) {
+                            radioBloc.setvolumen(value);
+                            setState(() {});
+                          },
+                          max: 1,
+                          min: 0,
+                        ),
+                      ],
+                    )),*/
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 35),
+                  decoration: BoxDecoration(shape: BoxShape.circle,
+                      // borderRadius: BorderRadius.all(Radius.circular(20)),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color(0x30000000),
+                            offset: Offset(0, 20),
+                            spreadRadius: 0,
+                            blurRadius: 20),
+                        BoxShadow(
+                            color: Color(0x40000000),
+                            offset: Offset(0, 10),
+                            spreadRadius: 0,
+                            blurRadius: 80),
+                      ]),
+                  child: imagenRadio(size),
+                ),
                 Text(
                   'Radio Activa',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
-                Text('Chicha Radio Activa'),
+                Text('Reactivando tus Sentidos',
+                    style: TextStyle(fontSize: 15, color: Colors.grey)),
                 SizedBox(
                   height: 20,
-                ),*/
-              /*  StreamBuilder<String>(
+                ),
+                /*  StreamBuilder<String>(
                     initialData: "",
                     stream: radioBloc.radio.metaDataStream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
+                        print("los datos que llega son ${snapshot.data}");
                         return Text(
                           'Radio Activa',
                           style: TextStyle(fontSize: 20),
@@ -108,10 +214,11 @@ class _RadioPageLightState extends State<RadioPageLight> {
                 SizedBox(
                   height: 40,
                 ),*/
-              reproductor(size),
-            ],
-          ),
-        ]),
+                reproductor(size),
+              ],
+            ),
+          ]),
+        ),
       ),
     );
   }
@@ -178,7 +285,7 @@ class _RadioPageLightState extends State<RadioPageLight> {
             fit: BoxFit.cover,
             placeholder: AssetImage('assets/jar-loading.gif'),
             image: NetworkImage(
-                'https://res.cloudinary.com/dp3hnmhpg/image/upload/v1602116388/ewddftgfhii5e51e6pvr.jpg')),
+                'https://res.cloudinary.com/dp3hnmhpg/image/upload/v1602635953/b14ppfosamwf1ssunakj.png')),
         onTap: () {
           print('Toca la imagen');
         },
@@ -193,11 +300,15 @@ class _RadioPageLightState extends State<RadioPageLight> {
         children: [
           (radioBloc.isPlaying)
               ? SpinKitRipple(
-                  color: Colors.white,
+                  color: prefs.colorSecundario
+                      ? color.appBarColorLight
+                      : color.appBarColorDark,
                   size: 40,
                 )
               : SpinKitWave(
-                  color: Colors.white,
+                  color: prefs.colorSecundario
+                      ? color.appBarColorLight
+                      : color.appBarColorDark,
                   size: 40.0,
                 ),
           SizedBox(
@@ -209,7 +320,9 @@ class _RadioPageLightState extends State<RadioPageLight> {
               IconButton(
                   //para recargar la se;al
                   icon: Icon(FontAwesomeIcons.sync),
-                  color: Colors.white,
+                  color: prefs.colorSecundario
+                      ? color.appBarColorLight
+                      : color.appBarColorDark,
                   splashColor: Colors.redAccent,
                   splashRadius: 30.0,
                   onPressed: () async {
@@ -223,7 +336,9 @@ class _RadioPageLightState extends State<RadioPageLight> {
                   //buton del play
                   //play
 
-                  backgroundColor: color.appBarColorLight,
+                  backgroundColor: prefs.colorSecundario
+                      ? color.appBarColorLight
+                      : color.appBarColorDark,
                   elevation: 13,
                   splashColor: Colors.yellow,
                   child:
@@ -250,7 +365,9 @@ class _RadioPageLightState extends State<RadioPageLight> {
                   icon: Icon(FontAwesomeIcons.stop),
                   splashColor: Colors.redAccent,
                   splashRadius: 30.0,
-                  color: Colors.white,
+                  color: prefs.colorSecundario
+                      ? color.appBarColorLight
+                      : color.appBarColorDark,
                   onPressed: () async {
                     radioBloc.isPlaying = false;
                     await radioBloc.radio.stop();

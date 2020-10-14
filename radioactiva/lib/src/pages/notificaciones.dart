@@ -10,9 +10,17 @@ class NotificacionesPage extends StatefulWidget {
 }
 
 class _NotificacionesPageState extends State<NotificacionesPage> {
+  NotificacionesProvider scansBloc = new NotificacionesProvider();
+  @override
+  void initState() {
+    scansBloc.estadoNotificacion(false);
+    // TODO: implement initState
+    notificacionesProvider = NotificacionesProvider();
+    super.initState();
+  }
+
   final prefs = new PreferenciasUsuario();
-  final NotificacionesProvider notificacionesProvider =
-      NotificacionesProvider();
+  NotificacionesProvider notificacionesProvider;
   @override
   Widget build(BuildContext context) {
     final scansBlock = new NotificacionesProvider();
@@ -57,6 +65,7 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
           itemBuilder: (context, i) => Dismissible(
             key: UniqueKey(),
             child: ListTile(
+              //  tileColor: color.appBarColorLight,
               leading: Image.asset('assets/logo.png'),
               title: Text(notificaciones[i].titulo),
               subtitle: Text(notificaciones[i].mensaje),

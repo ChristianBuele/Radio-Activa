@@ -51,10 +51,11 @@ class PushNotificationsProvider {
     TokenProvider tokenProvider = new TokenProvider();
     print('-----------las prefs son ${prefs.colorSecundario}');
     if (prefs.idUsuario != null) {
-      tokenProvider.actualizarProducto(prefs.idUsuario, token);
+      await tokenProvider.actualizarProducto(prefs.idUsuario, token);
     } else {
-      tokenProvider.crearToken(token);
+      await tokenProvider.crearToken(token);
     }
+
     obtenerDispositivos();
   }
 
@@ -66,6 +67,7 @@ class PushNotificationsProvider {
     print('Cuerpo ${message['data']['cuerpo']}');
 
     scansBloc.agregarScan(parse(message));
+    scansBloc.estadoNotificacion(true);
 
     // _mensajeStreamController.sink.add(argumento['title'] ?? 'no-data');
   }
@@ -74,6 +76,7 @@ class PushNotificationsProvider {
     final argumento = message['notification'];
     print('llega indo on launch $argumento');
     scansBloc.agregarScan(parse(message));
+    scansBloc.estadoNotificacion(true);
     //  _mensajeStreamController.sink.add(argumento);
   }
 
@@ -81,6 +84,7 @@ class PushNotificationsProvider {
     final argumento = message['notification'];
     print('llega indo on resume $argumento');
     scansBloc.agregarScan(parse(message));
+    scansBloc.estadoNotificacion(true);
     //  _mensajeStreamController.sink.add(argumento);
   }
 
@@ -102,21 +106,22 @@ class PushNotificationsProvider {
       'AAAAJSL6u_8:APA91bE0SYSzrBrYTWs8AXb4nO72G9fUvRMmR45xxh3F5Y6AeIn2MP7Qw6NRRPSNzB1zJzrq72B6bPuCxOS1s8I5PK7JZtrnLJYNE9Oavb7Ov0prKHeO7Zz-8ZvN-i-trwH95LWACnf5';
   final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
 
-  enviarNotificaciones(String titulo, String cuerpo) async {
+  enviarNotificaciones(String titulo, String cuerpo, String contenido) async {
+    //obtenerDispositivos();
+    print('hay ${listaToken.length} dispositivos');
     listaToken.forEach((element) {
-      print('se envia notificacion a $element ======');
-      sendNotificaciones(titulo, cuerpo, element);
+      sendNotificaciones(titulo, cuerpo, contenido, element);
     });
   }
 
-  Future<Map<String, dynamic>> sendNotificaciones(
-      String titulo, String cuerpo, String id) async {
+  Future<String> sendNotificaciones(
+      String titulo, String cuerpo, String contenido, String id) async {
     if (listaToken.isNotEmpty) {
       await firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(
             sound: true, badge: true, alert: true, provisional: false),
       );
-      print('el titylos que se va es $titulo , con el mensaje $cuerpo');
+      print('se enviar notificacion a $id');
       final resp = await http.post(
         'https://fcm.googleapis.com/fcm/send',
         headers: <String, String>{
@@ -125,31 +130,26 @@ class PushNotificationsProvider {
         },
         body: jsonEncode(
           <String, dynamic>{
-            'notification': <String, dynamic>{'body': cuerpo, 'title': titulo},
+            'notification': <String, dynamic>{
+              'body': cuerpo,
+              'title': titulo,
+              'sound': 'default'
+            },
             'priority': 'high',
             'data': <String, dynamic>{
               'click_action': 'FLUTTER_NOTIFICATION_CLICK',
               'id': '1',
               'status': 'done',
-              'no sera de tomar': 'un traguito'
+              'cuerpo': 'contenido'
             },
             'to': id,
           },
         ),
       );
       final decodedData = json.decode(resp.body);
-      print('======llega el mensaje de la notificacion $decodedData ======');
-
-      final Completer<Map<String, dynamic>> completer =
-          Completer<Map<String, dynamic>>();
-
-      firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          completer.complete(message);
-        },
-      );
-      print('llega el mensaje despues de la notify ${completer.future}');
-      return completer.future;
+      print(
+          '======llega el mensaje de la notificacion ${decodedData['success']} ======');
+      return decodedData['success'].toString();
     }
     return null;
   }
@@ -161,12 +161,15 @@ class PushNotificationsProvider {
     final decodedData = json.decode(resp.body);
     List<String> tokens = new List();
     if (decodedData == null) {
-      tokens = [];
+      print('no hay datos de dispositivos');
+      listaToken = [];
     } else {
       decodedData.forEach((id, value) {
         print('el token que llega a la lista es ${value['token']}');
         listaToken.add(value['token']);
       });
+      print(
+          'se termina de cargar los dispositivos con un total de ${listaToken.length}');
     }
   }
 }

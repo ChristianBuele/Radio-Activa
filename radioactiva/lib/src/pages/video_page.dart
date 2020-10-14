@@ -15,11 +15,13 @@ RadioBloc radioBloc = new RadioBloc();
 //VideoBloc videoBloc = new VideoBloc();
 
 class _VideoPageState extends State<VideoPage> {
-  VideoBloc videoBloc;
+  VideoBloc videoBloc = VideoBloc();
   double tiempoVideo = 0.0;
   FlickManager flickManager;
   @override
   Widget build(BuildContext context) {
+    flickManager =
+        FlickManager(videoPlayerController: videoBloc.videoPlayerController);
     print('radio es $radioBloc');
     statusRadio();
 
@@ -35,6 +37,7 @@ class _VideoPageState extends State<VideoPage> {
                 flickManager: flickManager,
               ),
             ),
+
             /*  FutureBuilder(
               future: videoBloc.streamVideo,
               builder: (context, snapshot) {
@@ -63,9 +66,8 @@ class _VideoPageState extends State<VideoPage> {
   @override
   void initState() {
     print('entrra al init del video');
-    videoBloc = new VideoBloc();
-    flickManager =
-        FlickManager(videoPlayerController: videoBloc.videoPlayerController);
+    videoBloc.initRadioService();
+
     super.initState();
   }
 

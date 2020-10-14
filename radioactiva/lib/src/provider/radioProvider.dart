@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_radio_player/flutter_radio_player.dart';
+import 'package:http/http.dart' as http;
 
 class RadioBloc {
   static final RadioBloc _singleton = new RadioBloc._internal();
@@ -27,8 +30,11 @@ class RadioBloc {
 
   Future<void> initRadioService() async {
     try {
-      await _flutterRadioPlayer.init(
-          "Radio Activa", "Live", "https://compuhome.ovh:9000/mega", "false");
+      final res = await http
+          .get('https://radioactiva-e95ad.firebaseio.com/enlaces.json');
+      final decodedData = json.decode(res.body);
+      final link = decodedData['radio'];
+      await _flutterRadioPlayer.init("Radio Activa", "Live", link, "false");
       isPlaying = false;
     } on PlatformException {
       print("Exception occurred while trying to register the services.");

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:radioactiva/src/pages/home_page.dart';
 import 'package:radioactiva/src/pages/navegador_page.dart';
 import 'package:radioactiva/src/pages/notificaciones.dart';
@@ -6,6 +7,7 @@ import 'package:radioactiva/src/pages/radio_pagepro.dart';
 import 'package:radioactiva/src/pages/settings_page.dart';
 import 'package:radioactiva/src/pages/video_page.dart';
 import 'package:radioactiva/src/provider/push_notification.dart';
+import 'package:radioactiva/src/provider/videoProider.dart';
 import 'package:radioactiva/src/utils/preferencias.dart';
 
 void main() async {
@@ -24,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   final prefs = new PreferenciasUsuario();
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
+  VideoBloc videoBloc;
 
   @override
   void initState() {
@@ -31,17 +34,20 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     final pushProvider = new PushNotificationsProvider();
     pushProvider.initNotifications();
-
+    videoBloc = new VideoBloc();
     pushProvider.mensajesStream.listen((event) {
       print('desde main---------------- $event');
 
-      // Navigator.pushNamed(context, 'notificaciones');
-      navigatorKey.currentState.pushNamed('notificaciones', arguments: event);
+      Navigator.pushNamed(context, 'notificaciones');
+      // navigatorKey.currentState.pushNamed('notificaciones', arguments: event);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,

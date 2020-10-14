@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:radioactiva/src/pages/radio_pagepro.dart';
 import 'package:radioactiva/src/pages/settings_page.dart';
 import 'package:radioactiva/src/pages/video_page.dart';
+import 'package:radioactiva/src/provider/notificacionesProvider.dart';
 import 'package:radioactiva/src/utils/preferencias.dart';
 import 'package:radioactiva/src/utils/colores.dart' as color;
+import 'package:share/share.dart';
+import 'package:social_share/social_share.dart';
 
 class Pantalla extends StatefulWidget {
   @override
@@ -11,8 +15,15 @@ class Pantalla extends StatefulWidget {
 }
 
 class _PantallaState extends State<Pantalla> {
+  bool bandNotificaciones = false;
+  NotificacionesProvider scansBloc = new NotificacionesProvider();
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final prefs = new PreferenciasUsuario();
-  bool _colorSecundario = false;
+
   int currentIndex = 0;
   int indexAux = 3;
   @override
@@ -24,10 +35,41 @@ class _PantallaState extends State<Pantalla> {
           ),
           actions: [
             IconButton(
-                icon: Icon(Icons.notifications_active),
+                icon: Icon(
+                  FontAwesomeIcons.whatsapp,
+                  color: Colors.white,
+                ),
                 onPressed: () {
-                  Navigator.pushNamed(context, 'notificaciones');
-                })
+                  SocialShare.shareWhatsapp(
+                      'Hola Radio Activa me podría pasar ');
+                }),
+            IconButton(
+                icon: Icon(FontAwesomeIcons.shareAlt),
+                onPressed: () {
+                  print('compartiendo');
+                  Share.share('Comparte nuestra app con tus amigos');
+                }),
+            StreamBuilder(
+              stream: scansBloc.hayNotificaciones,
+              initialData: true,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data) {
+                    return IconButton(
+                        icon: Icon(Icons.notifications_active),
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'notificaciones');
+                        });
+                  } else {
+                    return IconButton(
+                        icon: Icon(Icons.notifications_none),
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'notificaciones');
+                        });
+                  }
+                }
+              },
+            ),
           ],
           backgroundColor: (prefs.colorSecundario)
               ? color.appBarColorLight
@@ -113,7 +155,7 @@ class _PantallaState extends State<Pantalla> {
                   children: [
                     DrawerHeader(
                       child: Container(
-                        child: Image.asset('assets/logo.png'),
+                        child: Image.asset('assets/LOGO-RADIO-ACTIVA.jpg'),
                       ),
                     ),
                     Text(
@@ -172,7 +214,7 @@ class _PantallaState extends State<Pantalla> {
                 onTap: () {
                   Navigator.pushNamed(context, 'navegador',
                       arguments:
-                          'https://pub.dev/packages/flutter_webview_plugin,Instragram');
+                          'https://www.instagram.com/radioactivafan/?hl=es-la,Instragram');
                   print('FACEBOOK');
                 },
                 subtitle: Text('@radioactivafan',
@@ -186,19 +228,29 @@ class _PantallaState extends State<Pantalla> {
               ),
               Center(
                 child: Text(
-                  'Acerca del Desarrolador',
-                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  'Página Aliada',
+                  style: TextStyle(fontSize: 20),
                 ),
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/icons/fan.jpg'),
+                ),
+                title: Text(
+                  'FAN PAGE',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, 'navegador',
+                      arguments:
+                          'https://www.facebook.com/sigsigenlinea,FAN PAGE');
+                  print('FACEBOOK');
+                },
+                subtitle: Text('@sigsigenlinea',
+                    style: TextStyle(color: Colors.white, fontSize: 16)),
               )
             ],
           ),
         ));
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _colorSecundario = prefs.colorSecundario;
   }
 }
