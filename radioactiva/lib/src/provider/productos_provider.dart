@@ -17,14 +17,6 @@ class TokenProvider {
           sound: true, badge: true, alert: true, provisional: false),
     );
   }
-/*
-  Future<bool> crearProducto(ProductoModel producto) async {
-    final url = '$_url/productos.json';
-    final resp = await http.post(url, body: productoModelToJson(producto));
-    final decodedData = json.decode(resp.body);
-    print(decodedData);
-    return true;
-  }*/
 
   Future<bool> crearToken(String token) async {
     final url = 'https://radioactiva-e95ad.firebaseio.com/usuarios.json';

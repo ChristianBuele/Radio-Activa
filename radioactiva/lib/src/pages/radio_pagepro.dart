@@ -36,140 +36,94 @@ class _RadioPageLightState extends State<RadioPageLight> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          /* decoration: BoxDecoration(
-            color: Colors.blueAccent,
-            gradient: RadialGradient(colors: [Colors.black, Colors.red]),
-            image: DecorationImage(
-              image: AssetImage('assets/fpd.jpg'),
-              fit: BoxFit.cover,
-            ),
-          ),*/
           width: size.width,
           height: size.height,
           child: Stack(children: [
             Column(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    print('object');
-                  },
-                  child: Slidable(
-                    actionPane: SlidableDrawerActionPane(),
-                    actionExtentRatio: 0.50,
-                    movementDuration: Duration(seconds: 1),
-                    child: Container(
-                      child: ListTile(
-                        leading: Container(
-                          //   backgroundColor: Color.fromRGBO(0, 0, 0, 0),
-                          child: IconButton(
-                              color: prefs.colorSecundario
-                                  ? color.appBarColorLight
-                                  : color.appBarColorDark,
-                              icon: Icon((radioBloc.volumen == 0)
-                                  ? (FontAwesomeIcons.volumeMute)
-                                  : FontAwesomeIcons.volumeUp),
-                              onPressed: () {
-                                if (radioBloc.volumen != 0) {
-                                  radioBloc.setvolumen(0.0);
-                                } else {
-                                  radioBloc.setvolumen(0.8);
-                                }
-                                setState(() {});
-                              }),
-                          // foregroundColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                    secondaryActions: <Widget>[
-                      /* Slider(
-                        activeColor: prefs.colorSecundario
-                            ? color.appBarColorLight
-                            : color.appBarColorDark,
-                        inactiveColor: Color.fromRGBO(120, 120, 120, 1),
-                        value: radioBloc.volumen,
-                        onChanged: (value) {
-                          radioBloc.setvolumen(value);
-                          setState(() {});
-                        },
-                        max: 1,
-                        min: 0,
-                      ),*/
-                      SlideAction(
-                        closeOnTap: true,
-                        child: SliderTheme(
-                          data: SliderTheme.of(context).copyWith(
-                            activeTrackColor: Colors.red[700],
-                            inactiveTrackColor: Colors.red[100],
-                            trackShape: RoundedRectSliderTrackShape(),
-                            trackHeight: 4.0,
-                            thumbShape:
-                                RoundSliderThumbShape(enabledThumbRadius: 12.0),
-                            thumbColor: Colors.redAccent,
-                            overlayColor: Colors.red.withAlpha(32),
-                            overlayShape:
-                                RoundSliderOverlayShape(overlayRadius: 28.0),
-                            tickMarkShape: RoundSliderTickMarkShape(),
-                            activeTickMarkColor: Colors.red[700],
-                            inactiveTickMarkColor: Colors.red[100],
-                            valueIndicatorShape:
-                                PaddleSliderValueIndicatorShape(),
-                            valueIndicatorColor: Colors.redAccent,
-                            valueIndicatorTextStyle: TextStyle(
-                              color: Colors.white,
+                    onTap: () {
+                      print('object');
+                    },
+                    child: StreamBuilder(
+                      stream: radioBloc.streamVol,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Slidable(
+                            actionPane: SlidableDrawerActionPane(),
+                            actionExtentRatio: 0.50,
+                            movementDuration: Duration(seconds: 1),
+                            child: Container(
+                              child: ListTile(
+                                leading: Container(
+                                  //   backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+                                  child: IconButton(
+                                      color: prefs.colorSecundario
+                                          ? color.appBarColorLight
+                                          : color.appBarColorDark,
+                                      icon: Icon((snapshot.data == 0)
+                                          ? (FontAwesomeIcons.volumeMute)
+                                          : FontAwesomeIcons.volumeUp),
+                                      onPressed: () {
+                                        if (snapshot.data != 0) {
+                                          radioBloc.setvolumen(0.0);
+                                        } else {
+                                          radioBloc.setvolumen(0.8);
+                                        }
+                                      }),
+                                  // foregroundColor: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Slider(
-                            activeColor: prefs.colorSecundario
-                                ? color.appBarColorLight
-                                : color.appBarColorDark,
-                            inactiveColor: Color.fromRGBO(120, 120, 120, 1),
-                            value: radioBloc.volumen,
-                            onChanged: (value) {
-                              radioBloc.setvolumen(value);
-                              setState(() {});
-                            },
-                            max: 1,
-                            min: 0,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                /*Container(
-                    alignment: Alignment.topLeft,
-                    child: Row(
-                      children: [
-                        IconButton(
-                            color: prefs.colorSecundario
-                                ? color.appBarColorLight
-                                : color.appBarColorDark,
-                            icon: Icon((radioBloc.volumen == 0)
-                                ? (FontAwesomeIcons.volumeMute)
-                                : FontAwesomeIcons.volumeUp),
-                            onPressed: () {
-                              if (radioBloc.volumen != 0) {
-                                radioBloc.setvolumen(0.0);
-                              } else {
-                                radioBloc.setvolumen(0.8);
-                              }
-                              setState(() {});
-                            }),
-                        Slider(
-                          activeColor: prefs.colorSecundario
-                              ? color.appBarColorLight
-                              : color.appBarColorDark,
-                          inactiveColor: Color.fromRGBO(120, 120, 120, 1),
-                          value: radioBloc.volumen,
-                          onChanged: (value) {
-                            radioBloc.setvolumen(value);
-                            setState(() {});
-                          },
-                          max: 1,
-                          min: 0,
-                        ),
-                      ],
-                    )),*/
+                            secondaryActions: <Widget>[
+                              SlideAction(
+                                closeOnTap: true,
+                                child: SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    activeTrackColor: Colors.red[700],
+                                    inactiveTrackColor: Colors.red[100],
+                                    trackShape: RoundedRectSliderTrackShape(),
+                                    trackHeight: 4.0,
+                                    thumbShape: RoundSliderThumbShape(
+                                        enabledThumbRadius: 12.0),
+                                    thumbColor: Colors.redAccent,
+                                    overlayColor: Colors.red.withAlpha(32),
+                                    overlayShape: RoundSliderOverlayShape(
+                                        overlayRadius: 28.0),
+                                    tickMarkShape: RoundSliderTickMarkShape(),
+                                    activeTickMarkColor: Colors.red[700],
+                                    inactiveTickMarkColor: Colors.red[100],
+                                    valueIndicatorShape:
+                                        PaddleSliderValueIndicatorShape(),
+                                    valueIndicatorColor: Colors.redAccent,
+                                    valueIndicatorTextStyle: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  child: Slider(
+                                    activeColor: prefs.colorSecundario
+                                        ? color.appBarColorLight
+                                        : color.appBarColorDark,
+                                    inactiveColor:
+                                        Color.fromRGBO(120, 120, 120, 1),
+                                    value: snapshot.data,
+                                    onChanged: (value) {
+                                      radioBloc.setvolumen(value);
+                                    },
+                                    max: 1,
+                                    min: 0,
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        } else {
+                          return Container(
+                            child: Text('Cargando reproductor'),
+                          );
+                        }
+                      },
+                    )),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 20, vertical: 35),
                   decoration: BoxDecoration(shape: BoxShape.circle,
@@ -197,22 +151,6 @@ class _RadioPageLightState extends State<RadioPageLight> {
                 SizedBox(
                   height: 20,
                 ),
-                /*  StreamBuilder<String>(
-                    initialData: "",
-                    stream: radioBloc.radio.metaDataStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        print("los datos que llega son ${snapshot.data}");
-                        return Text(
-                          'Radio Activa',
-                          style: TextStyle(fontSize: 20),
-                        );
-                      }
-                      return Text(snapshot.data);
-                    }),
-                SizedBox(
-                  height: 40,
-                ),*/
                 reproductor(size),
               ],
             ),
@@ -229,23 +167,10 @@ class _RadioPageLightState extends State<RadioPageLight> {
         StreamBuilder(
           stream: radioBloc.radio.isPlayingStream,
           builder: (context, AsyncSnapshot<String> snapshot) {
-            String returnData = snapshot.data;
-            switch (returnData) {
-              case FlutterRadioPlayer.flutter_radio_stopped:
-                return opciones(snapshot, size);
-                break;
+            switch (snapshot.data) {
               case FlutterRadioPlayer.flutter_radio_loading:
                 return Row(
                   children: [
-                    /*Text(
-                      'Cargando...     ',
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.white,
-                          shadows: [
-                            Shadow(color: Colors.black, blurRadius: 1),
-                          ]),
-                    ),*/
                     CircularProgressIndicator(
                       backgroundColor: Color.fromRGBO(0, 0, 0, 0),
                       valueColor:
@@ -255,15 +180,63 @@ class _RadioPageLightState extends State<RadioPageLight> {
                 );
                 break;
               case FlutterRadioPlayer.flutter_radio_error:
-                return RaisedButton(
-                    child: Text("Retry ?"),
-                    onPressed: () async {
-                      await radioBloc.initRadioService();
-                    });
+                return Row(
+                  children: [
+                    Text('A ocurrido un error'),
+                    IconButton(
+                        //para recargar la se;al
+                        icon: Icon(FontAwesomeIcons.sync),
+                        color: prefs.colorSecundario
+                            ? color.appBarColorLight
+                            : color.appBarColorDark,
+                        splashColor: Colors.redAccent,
+                        splashRadius: 30.0,
+                        onPressed: () async {})
+                  ],
+                );
                 break;
               default:
+                // print('***************************');
+                // print('El estado de la radio es=' + snapshot.data);
                 return opciones(snapshot, size);
+                break;
             }
+
+            // String returnData = snapshot.data;
+            // switch (returnData) {
+            //   case FlutterRadioPlayer.flutter_radio_stopped:
+            //     return opciones(snapshot, size);
+            //     break;
+            //   case FlutterRadioPlayer.flutter_radio_loading:
+            //     return Row(
+            //       children: [
+            //         /*Text(
+            //           'Cargando...     ',
+            //           style: TextStyle(
+            //               fontSize: 20.0,
+            //               color: Colors.white,
+            //               shadows: [
+            //                 Shadow(color: Colors.black, blurRadius: 1),
+            //               ]),
+            //         ),*/
+            //         CircularProgressIndicator(
+            //           backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+            //           valueColor:
+            //               new AlwaysStoppedAnimation<Color>(Colors.white),
+            //         )
+            //       ],
+            //     );
+            //     break;
+            //   case FlutterRadioPlayer.flutter_radio_error:
+            //     return RaisedButton(
+            //         child: Text("Retry ?"),
+            //         onPressed: () async {
+            //           await radioBloc.initRadioService();
+            //         });
+            //     break;
+            //   default:
+            //     return opciones(snapshot, size);
+            // }
           },
         )
         /*IconButton(icon: Icon(Icons.replay_outlined), onPressed: () {}),
@@ -297,7 +270,7 @@ class _RadioPageLightState extends State<RadioPageLight> {
       width: size.width * 0.7,
       child: Column(
         children: [
-          (radioBloc.isPlaying)
+          (snapshot.data == FlutterRadioPlayer.flutter_radio_playing)
               ? SpinKitRipple(
                   color: prefs.colorSecundario
                       ? color.appBarColorLight
@@ -313,6 +286,7 @@ class _RadioPageLightState extends State<RadioPageLight> {
           SizedBox(
             height: 20,
           ),
+          //reproductor
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -325,16 +299,11 @@ class _RadioPageLightState extends State<RadioPageLight> {
                   splashColor: Colors.redAccent,
                   splashRadius: 30.0,
                   onPressed: () async {
-                    await radioBloc.radio.stop();
-                    await radioBloc.initRadioService();
-                    radioBloc.isPlaying = false;
-
-                    setState(() {});
+                    await radioBloc.detenerRadio();
+                    await radioBloc.iniciarRadio();
                   }),
+              //play button
               FloatingActionButton(
-                  //buton del play
-                  //play
-
                   backgroundColor: prefs.colorSecundario
                       ? color.appBarColorLight
                       : color.appBarColorDark,
@@ -345,19 +314,13 @@ class _RadioPageLightState extends State<RadioPageLight> {
                           ? Icon(Icons.pause)
                           : Icon(Icons.play_arrow),
                   onPressed: () async {
-                    print("button press data: " + snapshot.data.toString());
                     if (snapshot.data ==
-                        FlutterRadioPlayer.flutter_radio_stopped) {
-                      await radioBloc.initRadioService();
-                    }
-
-                    if (snapshot.data.toString() == "flutter_radio_playing") {
-                      radioBloc.isPlaying = true;
+                        FlutterRadioPlayer.flutter_radio_playing) {
+                      radioBloc.pause();
                     } else {
-                      radioBloc.isPlaying = false;
+                      await radioBloc.iniciarRadio();
+                      await radioBloc.play();
                     }
-                    await radioBloc.radio.playOrPause();
-                    setState(() {});
                   }),
               IconButton(
                   //boton del stop
@@ -368,10 +331,7 @@ class _RadioPageLightState extends State<RadioPageLight> {
                       ? color.appBarColorLight
                       : color.appBarColorDark,
                   onPressed: () async {
-                    radioBloc.isPlaying = false;
-                    await radioBloc.radio.stop();
-
-                    setState(() {});
+                    await radioBloc.detenerRadio();
                   }),
             ],
           )

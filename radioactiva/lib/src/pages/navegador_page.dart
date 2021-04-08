@@ -24,16 +24,6 @@ class _NavegadorPageState extends State<NavegadorPage> {
         title: Text(titulo),
       ),
       body: cuerpo(link),
-      /* key: UniqueKey(),
-      appBar: _crearAppBar(titulo),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          //_crearAppBar(titulo),
-          SliverFillRemaining(
-            child: cuerpo(url),
-          )
-        ],
-      ),*/
     );
   }
 

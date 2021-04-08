@@ -64,9 +64,9 @@ class _NotificacionesPageState extends State<NotificacionesPage> {
             key: UniqueKey(),
             child: ListTile(
               //  tileColor: color.appBarColorLight,
-              leading: Image.asset('assets/logo.png'),
-              title: Text(notificaciones[i].titulo),
-              subtitle: Text(notificaciones[i].mensaje),
+              leading: Image.asset('assets/logo1024-01.png'),
+              title: Text(notificaciones[i].titulo ?? ' '),
+              subtitle: Text(notificaciones[i].mensaje ?? ' '),
               trailing: Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,
