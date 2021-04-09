@@ -53,6 +53,7 @@ class RadioBloc {
         ._flutterRadioPlayer
         .init("Radio Activa", "Live", this.radioUrl, "false");
     this.streamVolumen(1);
+    play();
   }
 
   void setvolumen(double vol) {

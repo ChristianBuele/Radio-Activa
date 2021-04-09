@@ -81,21 +81,21 @@ class _PantallaState extends State<Pantalla> {
               : color.appBarColorDark),
       body: _callPage(indexAux),
       bottomNavigationBar: _menuInferior(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: (prefs.colorSecundario)
-            ? color.appBarColorLight
-            : color.appBarColorDark,
-        heroTag: 'btnGomes',
-        onPressed: () {
-          setState(() {
-            indexAux = 2;
-            print('RADIO MODE');
-          });
-        },
-        child: Icon(Icons.radio),
-        // backgroundColor: Color.fromRGBO(182, 50, 84, 1),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: (prefs.colorSecundario)
+      //       ? color.appBarColorLight
+      //       : color.appBarColorDark,
+      //   heroTag: 'btnGomes',
+      //   onPressed: () {
+      //     setState(() {
+      //       indexAux = 2;
+      //       print('RADIO MODE');
+      //     });
+      //   },
+      //   child: Icon(Icons.radio),
+      //   // backgroundColor: Color.fromRGBO(182, 50, 84, 1),
+      // ),
       drawer: crearDrawer(context),
     );
   }
@@ -103,7 +103,7 @@ class _PantallaState extends State<Pantalla> {
   Widget _callPage(int paginaActual) {
     switch (paginaActual) {
       case 0:
-        return VideoPage();
+        return RadioPageLight();
       case 1:
         return SettingsPage();
       default:
@@ -130,7 +130,7 @@ class _PantallaState extends State<Pantalla> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.ondemand_video,
+            Icons.radio,
           ),
           label: 'Live',
         ),
@@ -160,7 +160,7 @@ class _PantallaState extends State<Pantalla> {
                   children: [
                     DrawerHeader(
                       child: Container(
-                        child: Image.asset('assets/LOGO-RADIO-ACTIVA.jpg'),
+                        child: Image.asset('assets/nl.png'),
                       ),
                     ),
                     Text(

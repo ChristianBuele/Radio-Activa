@@ -25,13 +25,13 @@ class _RadioPageLightState extends State<RadioPageLight> {
   final prefs = new PreferenciasUsuario();
   @override
   Widget build(BuildContext context) {
-    VideoBloc videoBloc = new VideoBloc();
-    try {
-      videoBloc.pause();
-      print('pause a bideo');
-    } catch (e) {
-      print('ni hay problema de video');
-    }
+    // VideoBloc videoBloc = new VideoBloc();
+    // try {
+    //   videoBloc.pause();
+    //   print('pause a bideo');
+    // } catch (e) {
+    //   print('ni hay problema de video');
+    // }
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -257,7 +257,7 @@ class _RadioPageLightState extends State<RadioPageLight> {
             fit: BoxFit.cover,
             placeholder: AssetImage('assets/jar-loading.gif'),
             image: NetworkImage(
-                'https://res.cloudinary.com/dp3hnmhpg/image/upload/v1602635953/b14ppfosamwf1ssunakj.png')),
+                'https://firebasestorage.googleapis.com/v0/b/radioactiva-e95ad.appspot.com/o/nlra.jpg?alt=media&token=f5a355c7-0392-488e-a5e0-33c8c4392a60')),
         onTap: () {
           print('Toca la imagen');
         },
@@ -266,6 +266,8 @@ class _RadioPageLightState extends State<RadioPageLight> {
   }
 
   Widget opciones(AsyncSnapshot<String> snapshot, size) {
+    radioBloc.streamVolumen(0.9);
+
     return Container(
       width: size.width * 0.7,
       child: Column(
